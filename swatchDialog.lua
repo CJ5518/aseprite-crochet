@@ -22,36 +22,41 @@ module.getData (function) (nothing) -> table
 
 local module = {};
 
+--Private function, called when the text entries/numbers change
+--Used to update the pixel strech label
 function module.m_textEntryChanged()
 	local data = module.getData();
 	local pixelSize = module.calculatePixelSize();
 
 	module.dialog:modify{
 		id="stretchLabel",
-		text=string.format("Pixel Stretch: %.2f, %.2f", pixelSize.width, pixelSize.height)
+		text=string.format("Pixel Stretch: %d, %d", pixelSize.width, pixelSize.height)
 	}
 end
 
+--Create the widgets
 do
 	module.dialog = Dialog { title = "Test Swatch" }
 
+	--Entries for the real world width and height
 	module.dialog:entry {
-		id="widthSwatchEntry",
+		id="widthEntry",
 		label=string.format("Width (%s)", UNITS),
 		text="0",
 		focus = false,
 		onchange = module.m_textEntryChanged
 	}
 	module.dialog:entry {
-		id="heightSwatchEntry",
+		id="heightEntry",
 		label=string.format("Height (%s)", UNITS),
 		text="0",
 		focus = false,
 		onchange = module.m_textEntryChanged
 	}
 
+	--Number entries for the rows and columns
 	module.dialog:number {
-		id="rowsSwatchEntry",
+		id="rowsNumber",
 		label="Rows",
 		text="0",
 		focus = false,
@@ -59,23 +64,26 @@ do
 	}
 
 	module.dialog:number {
-		id="columnsSwatchEntry",
+		id="columnsNumber",
 		label="Columns",
 		text="0",
 		focus = false,
 		onchange = module.m_textEntryChanged
 	}
 
+	--Label to show the current level of stretching
 	module.dialog:label {
 		id="stretchLabel",
 		text="Pixel Stretch: "
 	}
+
+	--Button to preview the pixel streching
 	module.dialog:button {
 		id="previewButton",
 		onclick = function()
 			local sprite = Sprite(app.activeSprite);
 			sprite.pixelRatio = module.calculatePixelSize();
-			sprite.filename = sprite.filename .. "STRETCHED";
+			sprite.filename = "STRETCHED-" .. sprite.filename;
 			module.dialog:close();
 		end,
 		text = "Preview stretch"
@@ -83,19 +91,19 @@ do
 	}
 end
 
+--Show the dialog
 function module.showDialog()
 	module.dialog:show({wait = true});
-	local bounds = module.dialog.bounds;
-	module.dialog.bounds = Rectangle(bounds.x, bounds.y, 150, 200);
+
 end
 
 --Returns the user input data
 function module.getData()
 	local ret = {};
-	ret.rows = tonumber(module.dialog.data.rowsSwatchEntry) or 0;
-	ret.columns = tonumber(module.dialog.data.columnsSwatchEntry) or 0;
-	ret.realWidth = tonumber(module.dialog.data.widthSwatchEntry) or 0;
-	ret.realHeight = tonumber(module.dialog.data.heightSwatchEntry) or 0;
+	ret.rows = tonumber(module.dialog.data.rowsNumber) or 0;
+	ret.columns = tonumber(module.dialog.data.columnsNumber) or 0;
+	ret.realWidth = tonumber(module.dialog.data.widthEntry) or 0;
+	ret.realHeight = tonumber(module.dialog.data.heightEntry) or 0;
 	return ret;
 end
 
