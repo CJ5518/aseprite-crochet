@@ -14,7 +14,6 @@ module.showDialog (function) (nothing) -> nothing
 
 ]]
 
-local swatchDialog = dofile("swatchDialog.lua");
 
 local module = {};
 
@@ -25,7 +24,23 @@ do
 	module.dialog:button {
 		text = "Swatch",
 		onclick = function ()
-			swatchDialog.showDialog();
+			DIALOGS.swatchDialog.showDialog();
+		end
+	}
+
+	module.dialog:newrow{ always=true }
+
+	module.dialog:button {
+		text = "Output by Image",
+		onclick = function ()
+			DIALOGS.outputImageSizeDialog.showDialog();
+		end
+	}
+
+	module.dialog:button {
+		text = "Output by Desired Size",
+		onclick = function ()
+			DIALOGS.outputSelfSizeDialog.showDialog();
 		end
 	}
 end

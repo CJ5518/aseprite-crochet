@@ -21,17 +21,6 @@ end
 
 function module.showDialog()
 	module.dialog:show({wait = true});
-	local bounds = module.dialog.bounds;
-	module.dialog.bounds = Rectangle(bounds.x, bounds.y, 150, 200);
-end
-
-function module.calculateOutput()
-	local ret = {};
-	ret.rows = tonumber(module.dialog.data.rowsSwatchEntry) or 0;
-	ret.columns = tonumber(module.dialog.data.columnsSwatchEntry) or 0;
-	ret.realWidth = tonumber(module.dialog.data.widthSwatchEntry) or 0;
-	ret.realHeight = tonumber(module.dialog.data.heightSwatchEntry) or 0;
-	return ret;
 end
 
 return module;

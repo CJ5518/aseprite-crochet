@@ -10,21 +10,28 @@ module.showDialog (function) (nothing) -> nothing
 --Will have wait = true
 
 
+
 ]]
 
 local module = {};
+
+
+
+function module.m_textEntryChanged()
+	local input = module.getInput();
+end
 
 do
 	module.dialog = Dialog { title = "Desired Output (Size)" }
 
 	module.dialog:entry {
-		id="widthSwatchEntry",
+		id="widthEntry",
 		label=string.format("Width (%s)", UNITS),
 		text="0",
 		focus = false
 	}
 	module.dialog:entry {
-		id="heightSwatchEntry",
+		id="heightEntry",
 		label=string.format("Height (%s)", UNITS),
 		text="0",
 		focus = false
@@ -38,10 +45,13 @@ do
 		id="outputColumns",
 		label = "Columns: "
 	}
-	module.dialog:label {
-		id="outputStiches",
-		label = "Stiches: "
-	}
+end
+
+function module.getInput()
+	local ret = {};
+	ret.width = tonumber(module.dialog.data.widthEntry);
+	ret.height = tonumber(module.dialog.data.heightEntry);
+	return ret;
 end
 
 function module.showDialog()
