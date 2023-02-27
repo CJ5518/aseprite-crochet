@@ -14,9 +14,46 @@ module.showDialog (function) (nothing) -> nothing
 
 local module = {};
 
+function module.m_textEntryChanged()
+
+end
+
 do
 	module.dialog = Dialog { title = "Desired Output (Image)" }
 	
+	module.dialog:number {
+		id="scaleNumber",
+		label="Scale Factor",
+		text="1",
+		focus = false,
+		onchange = module.m_textEntryChanged
+	}
+
+	module.dialog:label {
+		id="rowsLabel",
+		text="Rows: "
+	}
+
+	module.dialog:label {
+		id="columnsLabel",
+		text="Columns: "
+	}
+
+	module.dialog:button {
+		id = "useButton",
+		text = "Use",
+		onclick = function ()
+			
+		end
+	}
+
+	module.dialog:button {
+		id = "closeButton",
+		text = "Close",
+		onclick = function ()
+			module.dialog:close();
+		end
+	}
 end
 
 function module.showDialog()
