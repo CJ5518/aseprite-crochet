@@ -15,7 +15,27 @@ module.showDialog (function) (nothing) -> nothing
 local module = {};
 
 function module.m_textEntryChanged()
+	local scaleFactor = tonumber(module.dialog.data.scaleNumber);
+	local rows, columns = app.activeSprite.width * scaleFactor, app.activeSprite.height * scaleFactor;
+	local swatchData = DIALOGS.swatchDialog.getData();
+	module.dialog:modify {
+		id = "rowsLabel",
+		text = "Rows: " .. tostring(rows)
+	}
 
+	module.dialog:modify {
+		id = "columnsLabel",
+		text = "Rows: " .. tostring(columns)
+	}
+
+	module.dialog:modify {
+		id = "widthLabel",
+		text = string.format("Width (%s): %.2f", UNITS, (swatchData.realWidth / swatchData.rows) * rows)
+	}
+	module.dialog:modify {
+		id = "heightLabel",
+		text = string.format("Height (%s): %.2f", UNITS, (swatchData.realHeight / swatchData.columns) * columns)
+	}
 end
 
 do
@@ -39,11 +59,22 @@ do
 		text="Columns: "
 	}
 
+	module.dialog:newrow{ always=false }
+
+	module.dialog:label {
+		id="widthLabel",
+		text="Width: "
+	}
+
+	module.dialog:label {
+		id="heightLabel",
+		text="Height: "
+	}
+
 	module.dialog:button {
 		id = "useButton",
-		text = "Use",
+		text = "Set Scale",
 		onclick = function ()
-			
 		end
 	}
 
@@ -57,6 +88,7 @@ do
 end
 
 function module.showDialog()
+	module.m_textEntryChanged();
 	module.dialog:show({wait = true});
 end
 
